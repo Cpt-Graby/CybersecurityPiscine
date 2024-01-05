@@ -13,3 +13,10 @@ Voici quelques sources pour apprendre a s'en servir :
 - [La doc officielle](https://curl.se/libcurl/): Normalement toutes est dessus.
 - [ ] [Mise en place rapide grace à Jacob Sorber](https://www.youtube.com/watch?v=daA-KBKfJ_o)
 - [ ] [How to Get started with libcURL de wolfSSL](https://www.youtube.com/watch?v=g83kYIQNRwU) 
+
+
+## Gestion d'arguments
+
+Il y a plusieurs librairies standard en C pour gérer les arguments en CLI:
+- Getopt. Dans `unistd.h` de la POSIX C Lib.
+- Argp . Cette dernière semble être base sur Getopt et avec quelques optimisation.
