@@ -3,6 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+
 def print_report(content: requests.Response):
     print('====== REPORT ====')
     print("Here is the following report")
@@ -13,8 +14,19 @@ def print_report(content: requests.Response):
 
 
 def simple_get(url: str, first_get: bool) -> requests.Response:
-    # TODO: docstring
-    headers = {'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1'}
+    """Apply a simple request to the provided url.
+    If the url is not valid, an error is raised.
+    Parameters
+    ----------
+    url : str,
+        Url to with the request will be applyed
+    Raises
+    ------
+    raise_for_status
+        If the request doesn't return a 200 request. The error is risen.
+    """
+    headers = {
+        'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1'}
     http_response = requests.get(url, headers=headers)
     if not http_response.ok and first_get:
         print(f'Something went wrong, status code : {r.status_code}')
@@ -25,7 +37,17 @@ def simple_get(url: str, first_get: bool) -> requests.Response:
 
 
 def making_soup(html_page: str) -> tuple:
-    # TODO: docstring
+    """Apply a simple request to the provided url.
+    If the url is not valid, an error is raised.
+    Parameters
+    ----------
+    url : str,
+        Url to with the request will be applyed
+    Raises
+    ------
+    raise_for_status
+        If the request doesn't return a 200 request. The error is risen.
+    """
     url_page = []
     url_img = []
     soup = BeautifulSoup(html_page, 'html.parser')
@@ -33,14 +55,20 @@ def making_soup(html_page: str) -> tuple:
         url_page.append(link.get('href'))
     for img in soup.find_all('img'):
         if img.get('src'):
-            #print(f' [ ] {img.get("src")} -  {img.get("alt")}')
             url_img.append(img.get('src'))
     tuple_url = (url_page, url_img)
-    return (tuple_url);
+    return (tuple_url)
 
 
 def download_img(url_link: str):
-    # TODO: docstring
+    """This function download the image that is provided at the given url.
+    If the url doesn't end with an allowd extension,
+    the function drops.
+    Parameters
+    ----------
+    url_link: str,
+        url where we can download the image.
+    """
     # Définition de extension accepte
     accepted_extensions = ["image/jpeg"]
     # Définition de l'expression régulière pour extraire le nom de fichier
@@ -51,13 +79,12 @@ def download_img(url_link: str):
     else:
         print(f"Not the right format for: {url_link}")
         return
-    # Realisation de la request
     response_of_dwn = requests.get(url_link)
     if not response_of_dwn.ok:
         return
-    #print(response_of_dwn.headers)
     if response_of_dwn.headers["Content-Type"] not in accepted_extensions:
         return
+    # Ecriture du fichier
     with open(name, 'wb') as file:
         file.write(response_of_dwn.content)
     return
@@ -73,7 +100,7 @@ def main():
     urls = making_soup(response.text)
     for img_url in urls[1]:
         print(img_url)
-        #download_img(img_url)
+        # download_img(img_url)
     print(len(urls[1]))
 
 
