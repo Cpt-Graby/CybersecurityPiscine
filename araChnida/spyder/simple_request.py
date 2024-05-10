@@ -90,19 +90,5 @@ def download_img(url_link: str):
     return
 
 
-def main():
-    # TODO: Checking of the input
-    # dest_url = 'https://www.upwork.com/resources/best-web-scraper'
-    # dest_url = 'https://www.google.com/'
-    test_img = 'https://img.lemde.fr/2024/04/25/0/0/6000/4000/180/0/95/0/26fd839_0cdba6be2ec245c8a17c215168705e19-0-7ce2120a106a4d36af120100ae287304.jpg'
-    dest_url = 'https://www.lemonde.fr'
-    response = simple_get(dest_url, True)
-    urls = making_soup(response.text)
-    for img_url in urls[1]:
-        print(img_url)
-        # download_img(img_url)
-    print(len(urls[1]))
-
-
 if __name__ == "__main__":
-    main()
+    spyder_engine()
