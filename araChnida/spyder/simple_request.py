@@ -43,6 +43,11 @@ def making_soup(html_page: str) -> tuple:
     ----------
     url : str,
         Url to with the request will be applyed
+    Return
+    ----------
+    tuple_url: tuple,
+        index[0] : url to follow
+        index[1] : url of img
     Raises
     ------
     raise_for_status
