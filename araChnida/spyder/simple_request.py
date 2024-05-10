@@ -28,9 +28,11 @@ def simple_get(url: str, first_get: bool) -> requests.Response:
     headers = {
         'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1'}
     http_response = requests.get(url, headers=headers)
-    if not http_response.ok and first_get:
-        print(f'Something went wrong, status code : {r.status_code}')
-        http_response.raise_for_status()
+    if not http_response.ok :
+        print(f'{http_response.status_code} : {url}')
+        if first_get:
+            http_response.raise_for_status()
+        return http_response
     # TODO: add a block if web_page doesnt give an html_page
     # print_report(http_response)
     return http_response
@@ -57,6 +59,7 @@ def making_soup(html_page: str) -> tuple:
     url_img = []
     soup = BeautifulSoup(html_page, 'html.parser')
     for link in soup.find_all('a'):
+        print(link.get('href'))
         url_page.append(link.get('href'))
     for img in soup.find_all('img'):
         if img.get('src'):

@@ -11,15 +11,18 @@ def spyder_engine(urls_to_check : set, count : int):
     'All the engine of the spyder programm is here'
     set_img = set()
     current_url = ''
+    first_url = True
     while (len(urls_to_check) >= 1 and count > 0):
         dest_url = urls_to_check.pop()
-        response = simple_request.simple_get(dest_url, True)
+        response = simple_request.simple_get(dest_url, first_url)
+        if not response.ok:
+            continue 
         urls = simple_request.making_soup(response.text)
         set_img.update(urls[1])
         urls_to_check.update(urls[0])
         count -= 1
-
-    print(f'urls2check: {urls_to_check}')
+        first_url = False
+    #print(f'urls2check: {urls_to_check}')
     #test_img = 'https://img.lemde.fr/2024/04/25/0/0/6000/4000/180/0/95/0/26fd839_0cdba6be2ec245c8a17c215168705e19-0-7ce2120a106a4d36af120100ae287304.jpg'
     #for img_url in urls[1]:
     #    print(img_url)
@@ -58,7 +61,7 @@ def main():
         depth = 1
     spyder_engine(all_url, depth)
     print("----------")
-    print(f'test:: {all_url}')
+    #print(f'test:: {all_url}')
 
 
 if __name__ == "__main__":
