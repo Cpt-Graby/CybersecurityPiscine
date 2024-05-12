@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import re
+import sys
 import requests
 from bs4 import BeautifulSoup
 
@@ -29,15 +30,19 @@ def simple_get(url: str, first_get: bool) -> requests.Response:
         'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1'}
     try:
         http_response = requests.get(url, headers=headers)
-        if not http_response.ok :
-            print(f'{http_response.status_code} : {url}')
-            if first_get:
-                http_response.raise_for_status()
-            return http_response
-        # TODO: add a block if web_page doesnt give an html_page
-        # print_report(http_response)
+    except requests.exceptions.MissingSchema as e:
+        if first_get:
+            sys.exit(2)
+        print(f'Invalid URL : {url}')
+        raise e
+    if not http_response.ok :
+        print(f'{http_response.status_code} : {url}')
+        if first_get:
+            http_response.raise_for_status()
         return http_response
-    except
+    # TODO: add a block if web_page doesnt give an html_page
+    # print_report(http_response)
+    return http_response
 
 
 def making_soup(html_page: str) -> tuple:

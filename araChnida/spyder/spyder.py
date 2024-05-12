@@ -9,6 +9,8 @@ import simple_request
 
 def spyder_engine(urls_to_check : set, count : int):
     'All the engine of the spyder programm is here'
+    # TODO: check URL was not already used
+    # TODO: add the root to uri
     set_img = set()
     checked_url = set()
     current_url = ''
@@ -16,8 +18,11 @@ def spyder_engine(urls_to_check : set, count : int):
     while (len(urls_to_check) >= 1 and count > 0):
         dest_url = urls_to_check.pop()
         checked_url.add(dest_url)
-        response = simple_request.simple_get(dest_url, first_url)
-        if not response.ok:
+        try:
+            response = simple_request.simple_get(dest_url, first_url)
+        except Exception as e:
+            continue
+        if not response.ok :
             continue 
         urls = simple_request.making_soup(response.text)
         set_img.update(urls[1])
@@ -63,7 +68,7 @@ def main():
     spyder_utils.creation_picture_folder(data_dir)
     all_url = set([args[0]])
     if (recursive == False):
-        depth = 1
+        depth = 2
     spyder_engine(all_url, depth)
     print("----------")
     #print(f'test:: {all_url}')
